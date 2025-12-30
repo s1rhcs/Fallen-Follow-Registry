@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>One Way Following</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+    }
+
+    /* GLOBAL */
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #050506 0, #050308 45%, #020104 100%);
+      color: #f8f5f3;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Landing layout */
+
+    .landing {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 20px;
+    }
+
+    .landing-panel {
+      max-width: 720px;
+      width: 100%;
+      padding: 28px 28px 22px;
+      border-radius: 22px;
+      background: radial-gradient(circle at top left, #14151b 0, #050608 55%, #030305 100%);
+      border: 1px solid rgba(139, 0, 0, 0.65);
+      box-shadow:
+        0 28px 70px rgba(0, 0, 0, 0.95),
+        0 0 40px rgba(139, 0, 0, 0.45);
+    }
+
+    /* Typography / spacing for landing text */
+
+    .landing-title-wrap,
+    .step-list,
+    .upload-box,
+    .tutorial-card,
+    .landing-footer {
+      line-height: 1.6;
+    }
+
+    .landing-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .landing-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .landing-title {
+      font-size: 24px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    .landing-sub {
+      font-size: 15px;
+      color: #c2c4cf;
+      margin: 0;
+    }
+
+    .landing-chip {
+      font-size: 11px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(139, 0, 0, 0.9);
+      background: radial-gradient(circle at top, rgba(139, 0, 0, 0.35) 0, rgba(139, 0, 0, 0.1) 70%);
+      color: #ffe7dd;
+      white-space: nowrap;
+      box-shadow: 0 0 14px rgba(139, 0, 0, 0.5);
+    }
+
+    /* Intro steps */
+
+    .step-list {
+      margin: 10px 0 18px;
+      padding-left: 22px;
+      font-size: 14px;
+      color: #d7d9e3;
+    }
+
+    .step-list li { margin-bottom: 6px; }
+
+    /* Upload card */
+
+    .upload-box {
+      margin-top: 6px;
+      padding: 16px 16px 14px;
+      border-radius: 18px;
+      background: #090a0f;
+      border: 1px solid #2b2d38;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.7);
+    }
+
+    .upload-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .upload-title {
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .upload-hint {
+      font-size: 12px;
+      color: #9c9fb3;
+    }
+
+    /* File input button – Batman red */
+
+    #file-input {
+      display: block;
+      margin: 0 auto 8px;
+      color: transparent;
+      max-width: 100%;
+    }
+
+    #file-input::file-selector-button {
+      border: none;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #8b0000, #d12a2a);
+      color: #fdf5f3;
+      font-size: 14px;
+      font-weight: 700;
+      padding: 9px 24px;
+      cursor: pointer;
+      margin-right: 10px;
+      box-shadow:
+        0 10px 26px rgba(0, 0, 0, 0.95),
+        0 0 22px rgba(209, 42, 42, 0.75);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: transform 0.12s ease, box-shadow 0.16s ease, filter 0.16s ease;
+    }
+
+    #file-input::file-selector-button:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 14px 34px rgba(0, 0, 0, 1),
+        0 0 26px rgba(209, 42, 42, 0.95);
+      filter: brightness(1.06);
+    }
+
+    #file-input::file-selector-button:active {
+      transform: translateY(0);
+      box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.9),
+        0 0 18px rgba(209, 42, 42, 0.85);
+    }
+
+    /* File pills */
+
+    .file-pills {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .file-pill {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: #07070d;
+      font-size: 13px;
+      box-shadow: inset 0 0 0 1px #20222b;
+    }
+
+    .file-pill-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .file-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #55586b;
+      box-shadow: 0 0 6px rgba(0,0,0,0.6);
+    }
+
+    .file-label {
+      color: #f7f8ff;
+      font-weight: 500;
+    }
+
+    .file-name {
+      color: #8e91b0;
+      font-size: 12px;
+    }
+
+    .file-pill.ready .file-dot {
+      background: #3cff9c;
+      box-shadow: 0 0 10px rgba(60,255,156,0.95);
+    }
+
+    .file-pill.ready .file-name {
+      color: #cbffe4;
+      font-weight: 500;
+    }
+
+    .file-pill.error .file-dot {
+      background: #ff4b6a;
+      box-shadow: 0 0 10px rgba(255,75,106,0.95);
+    }
+
+    .file-pill.error .file-name {
+      color: #ffc5d3;
+      font-weight: 500;
+    }
+
+    /* Status text */
+
+    .file-status-text {
+      font-size: 12px;
+      color: #a9abc8;
+      margin-top: 7px;
+      min-height: 16px;
+    }
+
+    .file-status-text.ok {
+      color: #8df0b3;
+    }
+
+    .file-status-text.err {
+      color: #ff9ab8;
+    }
+
+    /* Build button + status */
+
+    .actions-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .build-btn {
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #8b0000, #d12a2a);
+      color: #fdf5f3;
+      font-size: 14px;
+      padding: 9px 24px;
+      cursor: pointer;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      box-shadow:
+        0 12px 30px rgba(0,0,0,1),
+        0 0 24px rgba(209, 42, 42, 0.8);
+      transition: transform 0.12s ease, box-shadow 0.16s ease, opacity 0.16s ease, filter 0.16s ease;
+    }
+
+    .build-btn:disabled {
+      opacity: 0.45;
+      cursor: default;
+      box-shadow: none;
+      filter: grayscale(0.2);
+    }
+
+    .build-btn:not(:disabled):hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 16px 38px rgba(0,0,0,1),
+        0 0 28px rgba(209, 42, 42, 1);
+      filter: brightness(1.06);
+    }
+
+    .build-btn:not(:disabled):active {
+      transform: translateY(0);
+      box-shadow:
+        0 9px 22px rgba(0,0,0,0.9),
+        0 0 20px rgba(209, 42, 42, 0.9);
+    }
+
+    .upload-status {
+      font-size: 12px;
+      text-align: right;
+      color: #d4d5ff;
+    }
+
+    .upload-status.loading { color: #ffb74d; }
+    .upload-status.done { color: #8df0b3; }
+    .upload-status.error { color: #ff9ab8; }
+
+    /* Tutorial dropdown */
+
+    .tutorial-card {
+      margin-top: 14px;
+      padding: 10px 13px;
+      border-radius: 14px;
+      background: #07070d;
+      border: 1px solid #2b2d38;
+      font-size: 12px;
+      color: #d4d5e3;
+      line-height: 1.6;
+    }
+
+    .tutorial-card details {
+      cursor: pointer;
+    }
+
+    .tutorial-card summary {
+      list-style: none;
+      font-weight: 600;
+      color: #ff4b4b;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tutorial-card summary::before {
+      content: "▸";
+      font-size: 11px;
+      transition: transform 0.15s ease;
+    }
+
+    .tutorial-card details[open] summary::before {
+      transform: rotate(90deg);
+    }
+
+    .tutorial-card summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .tutorial-card details[open] summary {
+      margin-bottom: 6px;
+    }
+
+    .tutorial-card ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    /* Footer */
+
+    .landing-footer {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #a3a5c0;
+      line-height: 1.6;
+    }
+
+    .landing-footer strong {
+      color: #ff4b4b;
+    }
+
+    /* Main app */
+
+    .page {
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;          /* remove top/bottom margin */
+      padding: 24px 16px 32px; /* controlled padding instead of margin */
+      flex: 1;
+    }
+
+    .hidden { display: none !important; }
+
+    .header-card,
+    .table-card {
+      background: radial-gradient(circle at top, #14151c 0, #06070b 60%);
+      border-radius: 16px;
+      border: 1px solid rgba(139, 0, 0, 0.5);
+      box-shadow:
+        0 20px 50px rgba(0,0,0,0.95),
+        0 0 22px rgba(139, 0, 0, 0.4);
+    }
+
+    .header-card {
+      padding: 20px 22px 18px;
+      text-align: center;
+      margin-bottom: 18px;
+      line-height: 1.6;
+    }
+
+    .header-card:first-child {
+      margin-top: 0;
+    }
+
+    .table-card:last-child {
+      margin-bottom: 0;
+    }
+
+    .title-row {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(3, 5, 18, 0.85);
+      border: 1px solid rgba(139, 0, 0, 0.6);
+    }
+
+    .title-emoji { font-size: 22px; }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      font-size: 13px;
+      color: #c4c6eb;
+      line-height: 1.6;
+    }
+
+    #joke-line {
+      margin-top: 4px;
+      font-size: 12px;
+      color: #f7f7ff;
+      opacity: 0.9;
+    }
+
+    .controls {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .search-box input {
+      background: #070813;
+      border-radius: 999px;
+      border: 1px solid #2e3444;
+      padding: 6px 12px;
+      color: #f7f7ff;
+      font-size: 13px;
+      min-width: 220px;
+      outline: none;
+    }
+
+    .search-box input::placeholder { color: #8487a4; }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .filter-chip {
+      border-radius: 999px;
+      border: 1px solid #2e3444;
+      padding: 5px 10px;
+      font-size: 11px;
+      background: #050611;
+      color: #c0c1d8;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    }
+
+    .filter-chip span.count {
+      background: #1b1e2b;
+      border-radius: 999px;
+      padding: 1px 6px;
+      font-size: 10px;
+    }
+
+    .filter-chip.active {
+      border-color: #ff4b4b;
+      color: #fffbe5;
+      background: #22100f;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.9);
+    }
+
+    .filter-chip:hover {
+      transform: translateY(-0.5px);
+    }
+
+    .progress-bar-wrap {
+      margin-top: 10px;
+      width: 100%;
+      max-width: 380px;
+      height: 6px;
+      border-radius: 999px;
+      border: 1px solid #2e3448;
+      margin-left: auto;
+      margin-right: auto;
+      overflow: hidden;
+      background: #05060e;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #ff4b4b, #d12a2a);
+      transition: width 0.25s ease-out;
+    }
+
+    #progress-text {
+      margin-top: 4px;
+      font-size: 11px;
+      color: #c0c1d8;
+    }
+
+    .table-card { margin-top: 8px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 0;
+    }
+
+    thead {
+      background: #181b27;
+    }
+
+    th, td {
+      padding: 9px 12px;
+      font-size: 12px;
+      text-align: left;
+      white-space: nowrap;
+      line-height: 1.6;
+    }
+
+    th {
+      font-weight: 600;
+      color: #e5e6ff;
+      border-bottom: 1px solid #272b3b;
+      cursor: pointer;
+    }
+
+    th.sortable::after {
+      content: "⇅";
+      font-size: 10px;
+      margin-left: 4px;
+      opacity: 0.6;
+    }
+
+    th.sortable.asc::after { content: "↑"; }
+    th.sortable.desc::after { content: "↓"; }
+
+    tbody tr:nth-child(even) { background: #141722; }
+    tbody tr:nth-child(odd)  { background: #0f111b; }
+
+    tbody tr:hover {
+      background: #202433;
+    }
+
+    tr.tag-unfollowed { background: #3a0921 !important; }
+    tr.tag-influencer { background: #2a350b !important; }
+    tr.tag-public    { background: #09233f !important; }
+
+    td.user-cell { font-weight: 500; }
+    td.date-cell { color: #a6a7c9; font-size: 12px; }
+    td.link-cell { width: 1%; }
+    td.status-cell { width: 1%; }
+
+    a {
+      color: #ff4b4b;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    a:hover { text-decoration: underline; }
+
+    .tag-btn,
+    .copy-btn {
+      border-radius: 999px;
+      border: 1px solid #2e3444;
+      background: #050611;
+      color: #c0c1d8;
+      font-size: 11px;
+      padding: 3px 8px;
+      cursor: pointer;
+      margin-right: 4px;
+      transition: background 0.15s ease, border-color 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    }
+
+    .tag-btn:hover,
+    .copy-btn:hover {
+      transform: translateY(-0.5px);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.9);
+    }
+
+    .tag-btn.active[data-tag="unfollowed"] {
+      background: #ff4b6a;
+      color: #fff;
+      border-color: #ff4b6a;
+    }
+    .tag-btn.active[data-tag="influencer"] {
+      background: #ffb74d;
+      color: #000;
+      border-color: #ffb74d;
+    }
+    .tag-btn.active[data-tag="public"] {
+      background: #4ea3ff;
+      color: #fff;
+      border-color: #4ea3ff;
+    }
+
+    .copy-btn.copied {
+      background: #ff4b4b;
+      color: #000;
+      border-color: #ff4b4b;
+    }
+
+    @media (max-width: 700px) {
+      .landing-header-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .landing-chip {
+        align-self: flex-start;
+      }
+      h1 { font-size: 20px; }
+      th, td {
+        font-size: 11px;
+        padding: 7px 8px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Landing / upload screen -->
+  <div class="landing" id="landing">
+    <div class="landing-panel">
+      <div class="landing-header-row">
+        <div class="landing-title-wrap">
+          <h1 class="landing-title">ONE WAY FOLLOWS</h1>
+          <p class="landing-sub">Find the people you follow who don’t follow you back.</p>
+        </div>
+        <div class="landing-chip">Private • Runs in your browser securely</div>
+      </div>
+
+      <ol class="step-list">
+        <li>Export your Instagram data ZIP.</li>
+        <li>Grab <strong>followers_1.json</strong> and <strong>following.json</strong>.</li>
+        <li>Use the button below to select both files.</li>
+      </ol>
+
+      <div class="upload-box">
+        <div class="upload-label-row">
+          <span class="upload-title">Upload your JSON files</span>
+          <span class="upload-hint">Only followers_1.json and following.json are needed.</span>
+        </div>
+
+        <input type="file" id="file-input" multiple accept=".json">
+
+        <div class="file-pills">
+          <div class="file-pill" id="pill-followers">
+            <div class="file-pill-left">
+              <span class="file-dot"></span>
+              <span class="file-label">followers_1.json</span>
+            </div>
+            <span class="file-name" id="name-followers">(waiting)</span>
+          </div>
+          <div class="file-pill" id="pill-following">
+            <div class="file-pill-left">
+              <span class="file-dot"></span>
+              <span class="file-label">following.json</span>
+            </div>
+            <span class="file-name" id="name-following">(waiting)</span>
+          </div>
+        </div>
+
+        <div id="file-status-text" class="file-status-text">
+          Choose both files to get started.
+        </div>
+
+        <div class="actions-row">
+          <button id="build-btn" class="build-btn" disabled>Build One Way Follows list</button>
+          <div class="upload-status" id="upload-status"></div>
+        </div>
+      </div>
+
+      <!-- Tutorial dropdown bubble -->
+      <div class="tutorial-card">
+        <details>
+          <summary>How do I get these Instagram files?</summary>
+          <ol>
+            <li>Open Instagram and go to <strong>Settings → Accounts Center</strong>.</li>
+            <li>Tap <strong>Your information and permissions → Export your information</strong>.</li>
+            <li>Select your Instagram account and choose <strong>Some of your information</strong>.</li>
+            <li>Only check <strong>Followers and following</strong>, set format to <strong>JSON</strong>, and choose <strong>Download to device</strong>.</li>
+            <li>Create the file, then use the email or notification from Instagram to download the ZIP to your computer.</li>
+            <li>Unzip it, then open <code>connections/followers_and_following</code>.</li>
+            <li>Pick <strong>followers_1.json</strong> and <strong>following.json</strong> from that folder and upload them here.</li>
+          </ol>
+        </details>
+      </div>
+
+      <div class="landing-footer">
+        Export from Instagram via <strong>Settings → Accounts Center → Export your information</strong>, then grab these two files from the ZIP.
+      </div>
+    </div>
+  </div>
+
+  <!-- Main dashboard -->
+  <div class="page hidden" id="main-app">
+    <div class="header-card" id="header-card">
+      <div class="title-row">
+        <span class="title-emoji">😈</span>
+        <h1>One Way Follows list</h1>
+        <span class="title-emoji">😈</span>
+      </div>
+      <p class="subtitle">
+        People you follow who don’t follow you back: <span id="count-total">0</span>
+      </p>
+      <p class="subtitle" id="joke-line"></p>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="Search username..." />
+        </div>
+        <div class="filters">
+          <button class="filter-chip" data-filter="all">
+            Show all <span class="count" id="count-all">0</span>
+          </button>
+          <button class="filter-chip" data-filter="unfollowed">
+            Unfollowed ❌ <span class="count" id="count-unfollowed">0</span>
+          </button>
+          <button class="filter-chip" data-filter="influencer">
+            Influencer 🎥 <span class="count" id="count-influencer">0</span>
+          </button>
+          <button class="filter-chip" data-filter="public">
+            Public page 📲 <span class="count" id="count-public">0</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="progress-bar-wrap">
+        <div class="progress-bar" id="progress-bar"></div>
+      </div>
+      <p class="subtitle" id="progress-text"></p>
+    </div>
+
+    <div class="table-card" id="table-card">
+      <table id="fake-list-table">
+        <thead>
+          <tr>
+            <th class="sortable" data-sort-key="username">Username</th>
+            <th class="sortable" data-sort-key="timestamp">Followed at</th>
+            <th>Profile</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- rows injected by JS -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    const jokes = [
+      "Don't be a fan.",
+      "Purge time.",
+      "If they wanted to they would.",
+      "They'll notice once they see you unfollow.",
+    ];
+
+    const fileInput = document.getElementById("file-input");
+    const buildBtn = document.getElementById("build-btn");
+    const uploadStatus = document.getElementById("upload-status");
+    const pillFollowers = document.getElementById("pill-followers");
+    const pillFollowing = document.getElementById("pill-following");
+    const nameFollowers = document.getElementById("name-followers");
+    const nameFollowing = document.getElementById("name-following");
+    const fileStatusText = document.getElementById("file-status-text");
+    const landing = document.getElementById("landing");
+    const mainApp = document.getElementById("main-app");
+
+    let followersJson = null;
+    let followingJson = null;
+
+    function setWaitingText(el) {
+      el.textContent = "(waiting)";
+    }
+
+    function setUploadedText(el) {
+      el.textContent = "Uploaded";
+    }
+
+    function setFilePillStateUploaded(pill, nameEl) {
+      pill.classList.remove("error");
+      pill.classList.add("ready");
+      setUploadedText(nameEl);
+    }
+
+    function setFilePillStateError(pill, nameEl) {
+      pill.classList.remove("ready");
+      pill.classList.add("error");
+      nameEl.textContent = "Error";
+    }
+
+    function updateBuildButtonState() {
+      const ready = !!(followersJson && followingJson);
+      buildBtn.disabled = !ready;
+      fileStatusText.classList.remove("ok", "err");
+      if (ready) {
+        fileStatusText.textContent = "Nice. Both files are uploaded. You can build the list now.";
+        fileStatusText.classList.add("ok");
+      } else {
+        fileStatusText.textContent = "Choose both followers_1.json and following.json.";
+      }
+    }
+
+    function readJsonFile(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          try {
+            const obj = JSON.parse(evt.target.result);
+            resolve(obj);
+          } catch (e) {
+            reject(e);
+          }
+        };
+        reader.onerror = () => reject(new Error("Failed to read file"));
+        reader.readAsText(file);
+      });
+    }
+
+    async function handleFiles(files) {
+      if (!files || !files.length) return;
+
+      uploadStatus.textContent = "";
+      uploadStatus.className = "upload-status";
+
+      let newFollowersFile = null;
+      let newFollowingFile = null;
+
+      for (const f of files) {
+        const lower = f.name.toLowerCase();
+        if (lower === "followers_1.json") newFollowersFile = f;
+        if (lower === "following.json")   newFollowingFile = f;
+      }
+
+      // Followers side
+      if (newFollowersFile) {
+        followersJson = null;
+        pillFollowers.classList.remove("ready", "error");
+        nameFollowers.textContent = "Reading…";
+
+        uploadStatus.textContent = "Reading followers_1.json…";
+        uploadStatus.classList.add("loading");
+
+        try {
+          const data = await readJsonFile(newFollowersFile);
+          followersJson = data;
+          setFilePillStateUploaded(pillFollowers, nameFollowers);
+        } catch (e) {
+          followersJson = null;
+          setFilePillStateError(pillFollowers, nameFollowers);
+          uploadStatus.textContent = "Could not read followers_1.json.";
+          uploadStatus.classList.remove("loading");
+          uploadStatus.classList.add("error");
+        }
+      }
+
+      // Following side
+      if (newFollowingFile) {
+        followingJson = null;
+        pillFollowing.classList.remove("ready", "error");
+        nameFollowing.textContent = "Reading…";
+
+        if (!newFollowersFile) {
+          uploadStatus.textContent = "Reading following.json…";
+          uploadStatus.classList.add("loading");
+        }
+
+        try {
+          const data = await readJsonFile(newFollowingFile);
+          followingJson = data;
+          setFilePillStateUploaded(pillFollowing, nameFollowing);
+        } catch (e) {
+          followingJson = null;
+          setFilePillStateError(pillFollowing, nameFollowing);
+          uploadStatus.textContent = "Could not read following.json.";
+          uploadStatus.classList.remove("loading");
+          uploadStatus.classList.add("error");
+        }
+      }
+
+      updateBuildButtonState();
+
+      if (followersJson && followingJson) {
+        uploadStatus.textContent = "Both files uploaded.";
+        uploadStatus.classList.remove("loading");
+        uploadStatus.classList.add("done");
+      } else if (!uploadStatus.classList.contains("error")) {
+        uploadStatus.textContent = "Waiting for the other file.";
+      }
+    }
+
+    fileInput.addEventListener("change", (e) => {
+      handleFiles(e.target.files);
+    });
+
+    function buildNotFollowingBack(followersData, followingData) {
+      const followers = new Set();
+      if (Array.isArray(followersData)) {
+        for (const entry of followersData) {
+          const data = entry && entry.string_list_data;
+          if (Array.isArray(data) && data[0] && data[0].value) {
+            followers.add(data[0].value);
+          }
+        }
+      }
+
+      const followingEntries = [];
+      const list = followingData && followingData.relationships_following;
+      if (Array.isArray(list)) {
+        for (const entry of list) {
+          const title = entry.title;
+          const sdata = entry.string_list_data;
+          if (!title || !Array.isArray(sdata) || !sdata[0]) continue;
+          const href = sdata[0].href;
+          const ts = sdata[0].timestamp;
+          followingEntries.push({ username: title, href, timestamp: ts });
+        }
+      }
+
+      return followingEntries
+        .filter(e => !followers.has(e.username))
+        .sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+    }
+
+    function renderTable(notFollowingList) {
+      const tbody = document.querySelector("#fake-list-table tbody");
+      tbody.innerHTML = "";
+
+      for (const e of notFollowingList) {
+        const username = e.username;
+        const href = e.href || ("https://www.instagram.com/" + username);
+        const ts = e.timestamp;
+        let dateStr = "unknown";
+        if (typeof ts === "number") {
+          const d = new Date(ts * 1000);
+          const opts = { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit" };
+          dateStr = d.toLocaleString(undefined, opts);
+        }
+        const tr = document.createElement("tr");
+        tr.setAttribute("data-username", username);
+        tr.setAttribute("data-timestamp", ts || "");
+
+        tr.innerHTML = `
+          <td class="user-cell" title="Mark them however they deserve">${username}</td>
+          <td class="date-cell">${dateStr}</td>
+          <td class="link-cell">
+            <a href="${href}" target="_blank">Open</a>
+            <button class="copy-btn" data-href="${href}" title="Copy link">Copy</button>
+          </td>
+          <td class="status-cell">
+            <button class="tag-btn" data-tag="unfollowed">Unfollowed</button>
+            <button class="tag-btn" data-tag="influencer">Influencer/Celeb</button>
+            <button class="tag-btn" data-tag="public">Public page</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      }
+
+      document.getElementById("count-total").textContent = notFollowingList.length;
+      document.getElementById("count-all").textContent = notFollowingList.length;
+
+      const jokeEl = document.getElementById("joke-line");
+      if (jokeEl && jokes.length) {
+        jokeEl.textContent = jokes[Math.floor(Math.random() * jokes.length)];
+      }
+    }
+
+    function setupTagging() {
+      const tableBody = document.querySelector("#fake-list-table tbody");
+      const progressBar = document.getElementById("progress-bar");
+      const progressText = document.getElementById("progress-text");
+
+      const counts = {
+        all: 0,
+        unfollowed: 0,
+        influencer: 0,
+        public: 0,
+        processed: 0
+      };
+
+      function recalcCounts() {
+        const rows = Array.from(document.querySelectorAll("#fake-list-table tbody tr"));
+        counts.all = rows.length;
+        counts.unfollowed = 0;
+        counts.influencer = 0;
+        counts.public = 0;
+        counts.processed = 0;
+
+        rows.forEach(row => {
+          let tag = null;
+          if (row.classList.contains("tag-unfollowed")) tag = "unfollowed";
+          if (row.classList.contains("tag-influencer")) tag = "influencer";
+          if (row.classList.contains("tag-public")) tag = "public";
+          if (tag) {
+            counts[tag] += 1;
+            counts.processed += 1;
+          }
+        });
+
+        document.getElementById("count-all").textContent = counts.all;
+        document.getElementById("count-unfollowed").textContent = counts.unfollowed;
+        document.getElementById("count-influencer").textContent = counts.influencer;
+        document.getElementById("count-public").textContent = counts.public;
+
+        const pct = counts.all ? Math.round((counts.processed / counts.all) * 100) : 0;
+        progressBar.style.width = pct + "%";
+        progressText.textContent = "Processed: " + counts.processed + " / " + counts.all + " (" + pct + "%)";
+      }
+
+      function applyRowTag(row, tag) {
+        row.classList.remove("tag-unfollowed", "tag-influencer", "tag-public");
+        row.querySelectorAll(".tag-btn").forEach(btn => btn.classList.remove("active"));
+        if (!tag) return;
+        row.classList.add("tag-" + tag);
+        const btn = row.querySelector(".tag-btn[data-tag='" + tag + "']");
+        if (btn) btn.classList.add("active");
+      }
+
+      function copyToClipboard(text, btn) {
+        if (!navigator.clipboard) {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.position = "fixed";
+          ta.style.opacity = "0";
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          try { document.execCommand("copy"); } catch (e) {}
+          document.body.removeChild(ta);
+        } else {
+          navigator.clipboard.writeText(text).catch(() => {});
+        }
+        btn.classList.add("copied");
+        setTimeout(() => btn.classList.remove("copied"), 800);
+      }
+
+      tableBody.addEventListener("click", (evt) => {
+        const btn = evt.target.closest(".tag-btn");
+        const copyBtn = evt.target.closest(".copy-btn");
+
+        if (copyBtn) {
+          const href = copyBtn.getAttribute("data-href");
+          if (href) copyToClipboard(href, copyBtn);
+          return;
+        }
+
+        if (!btn) return;
+
+        const row = btn.closest("tr");
+        const tag = btn.getAttribute("data-tag");
+
+        let currentTag = null;
+        if (row.classList.contains("tag-unfollowed")) currentTag = "unfollowed";
+        if (row.classList.contains("tag-influencer")) currentTag = "influencer";
+        if (row.classList.contains("tag-public")) currentTag = "public";
+
+        const newTag = (currentTag === tag) ? null : tag;
+
+        applyRowTag(row, newTag);
+        recalcCounts();
+      });
+
+      recalcCounts();
+    }
+
+    function setupFiltersAndSorting() {
+      const searchInput = document.getElementById("search-input");
+      const rowsSelector = "#fake-list-table tbody tr";
+      let activeFilter = "all";
+      let searchTerm = "";
+      let currentSort = { key: "timestamp", dir: "desc" };
+
+      function rowMatchesFilterAndSearch(row, filter, searchTerm) {
+        const username = (row.getAttribute("data-username") || "").toLowerCase();
+        let tag = null;
+        if (row.classList.contains("tag-unfollowed")) tag = "unfollowed";
+        if (row.classList.contains("tag-influencer")) tag = "influencer";
+        if (row.classList.contains("tag-public")) tag = "public";
+
+        const matchesFilter = (filter === "all") ? true : tag === filter;
+        const matchesSearch = username.includes(searchTerm.toLowerCase());
+        return matchesFilter && matchesSearch;
+      }
+
+      function applyFilterAndSearch() {
+        const rows = document.querySelectorAll(rowsSelector);
+        rows.forEach(row => {
+          const show = rowMatchesFilterAndSearch(row, activeFilter, searchTerm);
+          row.style.display = show ? "" : "none";
+        });
+        document.querySelectorAll(".filter-chip").forEach(chip => {
+          chip.classList.toggle("active", chip.getAttribute("data-filter") === activeFilter);
+        });
+      }
+
+      document.querySelector(".filters").addEventListener("click", evt => {
+        const chip = evt.target.closest(".filter-chip");
+        if (!chip) return;
+        activeFilter = chip.getAttribute("data-filter") || "all";
+        applyFilterAndSearch();
+      });
+
+      searchInput.addEventListener("input", () => {
+        searchTerm = searchInput.value || "";
+        applyFilterAndSearch();
+      });
+
+      function sortTableBy(key, direction) {
+        const tbody = document.querySelector("#fake-list-table tbody");
+        const rows = Array.from(tbody.querySelectorAll("tr"));
+
+        rows.sort((a, b) => {
+          if (key === "username") {
+            const ua = (a.getAttribute("data-username") || "").toLowerCase();
+            const ub = (b.getAttribute("data-username") || "").toLowerCase();
+            if (ua < ub) return direction === "asc" ? -1 : 1;
+            if (ua > ub) return direction === "asc" ? 1 : -1;
+            return 0;
+          }
+          if (key === "timestamp") {
+            const ta = parseInt(a.getAttribute("data-timestamp") || "0", 10);
+            const tb = parseInt(b.getAttribute("data-timestamp") || "0", 10);
+            return direction === "asc" ? (ta - tb) : (tb - ta);
+          }
+          return 0;
+        });
+
+        rows.forEach(r => tbody.appendChild(r));
+      }
+
+      document.querySelectorAll("th.sortable").forEach(th => {
+        th.addEventListener("click", () => {
+          const key = th.getAttribute("data-sort-key");
+          if (!key) return;
+
+          if (currentSort.key === key) {
+            currentSort.dir = currentSort.dir === "asc" ? "desc" : "asc";
+          } else {
+            currentSort.key = key;
+            currentSort.dir = key === "timestamp" ? "desc" : "asc";
+          }
+
+          document.querySelectorAll("th.sortable").forEach(h => h.classList.remove("asc", "desc"));
+          th.classList.add(currentSort.dir);
+
+          sortTableBy(currentSort.key, currentSort.dir);
+          applyFilterAndSearch();
+        });
+      });
+
+      applyFilterAndSearch();
+    }
+
+    buildBtn.addEventListener("click", () => {
+      if (!(followersJson && followingJson)) return;
+      uploadStatus.textContent = "Building list…";
+      uploadStatus.classList.remove("error");
+      uploadStatus.classList.add("loading");
+
+      const list = buildNotFollowingBack(followersJson, followingJson);
+      renderTable(list);
+      setupTagging();
+      setupFiltersAndSorting();
+      uploadStatus.textContent = "";
+      uploadStatus.classList.remove("loading");
+
+      landing.classList.add("hidden");
+      mainApp.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+</body>
+</html>
