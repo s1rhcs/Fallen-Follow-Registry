@@ -20,7 +20,6 @@
     /* DARK THEME TOKENS (default) */
     body.theme-dark {
       --ds-bg: #020308;
-      --ds-bg-alt: #020308;
       --ds-panel-bg-main: #060713;
       --ds-panel-bg-alt: #020309;
       --ds-panel-border: #111827;
@@ -36,41 +35,40 @@
       --ds-row-hover: #091023;
     }
 
-    /* LIGHTER HUD THEME TOKENS */
+    /* LIGHT THEME TOKENS – clean, bright */
     body.theme-light {
-      --ds-bg: #050912;
-      --ds-bg-alt: #050912;
-      --ds-panel-bg-main: #0a111f;
-      --ds-panel-bg-alt: #050912;
-      --ds-panel-border: #1f2937;
-      --ds-holo-blue: #38bdf8;
-      --ds-holo-blue-soft: #bae6fd;
-      --ds-holo-orange: #fdba74;
-      --ds-danger: #f97373;
-      --ds-text-main: #e5f0ff;
-      --ds-text-soft: #a5b4cf;
+      --ds-bg: #f7f7fb;
+      --ds-panel-bg-main: #ffffff;
+      --ds-panel-bg-alt: #ffffff;
+      --ds-panel-border: #e2e8f0;
+      --ds-holo-blue: #2563eb;
+      --ds-holo-blue-soft: #1d4ed8;
+      --ds-holo-orange: #ea580c;
+      --ds-danger: #dc2626;
+      --ds-text-main: #111827;
+      --ds-text-soft: #4b5563;
       --ds-grid-line: rgba(148, 163, 184, 0.14);
-      --ds-row-even: #07111f;
-      --ds-row-odd: #050a17;
-      --ds-row-hover: #0b1627;
+      --ds-row-even: #f9fafb;
+      --ds-row-odd: #ffffff;
+      --ds-row-hover: #e5edff;
     }
 
-    /* GLOBAL BACKGROUND */
+    /* GLOBAL BACKGROUND – flat per theme */
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       color: var(--ds-text-main);
-      background:
-        radial-gradient(circle at top, #0b1020 0, var(--ds-bg) 45%, #000000 100%),
-        linear-gradient(160deg, var(--ds-bg-alt) 0, var(--ds-bg-alt) 40%, var(--ds-bg-alt) 100%);
+      background-color: var(--ds-bg);
+      background-image: none;
       position: relative;
       overflow-x: hidden;
-      transition: background 0.25s ease, color 0.25s ease;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
-    body::before {
+    /* grid + vignette only in dark mode */
+    body.theme-dark::before {
       content: "";
       position: fixed;
       inset: 0;
@@ -84,7 +82,7 @@
       z-index: 0;
     }
 
-    body::after {
+    body.theme-dark::after {
       content: "";
       position: fixed;
       left: -10%;
@@ -95,6 +93,89 @@
         radial-gradient(circle at 50% -40%, transparent 0, transparent 40%, rgba(0, 0, 0, 0.93) 80%);
       z-index: 0;
       pointer-events: none;
+    }
+
+    /* GLOBAL FIXED THEME TOGGLE TOP-RIGHT */
+    .theme-toggle-bubble-global {
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 50;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #020617;
+      border: 1px solid #1f2933;
+      box-shadow:
+        0 6px 14px rgba(0, 0, 0, 1),
+        0 0 16px rgba(15, 23, 42, 0.9);
+      font-size: 11px;
+      color: var(--ds-text-soft);
+      white-space: nowrap;
+    }
+
+    body.theme-light .theme-toggle-bubble-global {
+      background: #eef2ff;
+      border-color: #c7d2fe;
+      box-shadow:
+        0 6px 16px rgba(148, 163, 184, 0.5),
+        0 0 14px rgba(191, 219, 254, 0.6);
+      color: #1f2937;
+    }
+
+    .theme-toggle-label {
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 600;
+    }
+
+    .theme-toggle-btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid #0f172a;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+      color: #e5e7eb;
+      font-size: 11px;
+      padding: 4px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      box-shadow:
+        0 4px 10px rgba(0, 0, 0, 1),
+        0 0 14px rgba(15, 23, 42, 0.9);
+      transition:
+        transform 0.1s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease,
+        color 0.15s ease;
+    }
+
+    .theme-toggle-btn span.icon {
+      font-size: 13px;
+    }
+
+    body.theme-light .theme-toggle-btn {
+      background: radial-gradient(circle at top, #fefce8, #f97316);
+      color: #111827;
+      border-color: #ea580c;
+      box-shadow:
+        0 4px 10px rgba(248, 181, 87, 0.6),
+        0 0 12px rgba(248, 181, 87, 0.7);
+    }
+
+    .theme-toggle-btn:hover {
+      transform: translateY(-1px);
+      box-shadow:
+        0 6px 14px rgba(0, 0, 0, 1),
+        0 0 18px rgba(15, 23, 42, 0.9);
+    }
+
+    body.theme-light .theme-toggle-btn:hover {
+      box-shadow:
+        0 6px 16px rgba(248, 181, 87, 0.7),
+        0 0 18px rgba(248, 181, 87, 0.7);
     }
 
     .landing {
@@ -125,6 +206,14 @@
       overflow: hidden;
     }
 
+    body.theme-light .landing-panel {
+      background: #ffffff;
+      border-color: var(--ds-panel-border);
+      box-shadow:
+        0 16px 30px rgba(148, 163, 184, 0.35),
+        0 0 18px rgba(148, 163, 184, 0.25);
+    }
+
     .landing-panel::before {
       content: "";
       position: absolute;
@@ -138,12 +227,11 @@
       pointer-events: none;
     }
 
-    .landing-title-wrap,
-    .step-list,
-    .upload-box,
-    .tutorial-card,
-    .landing-footer {
-      line-height: 1.6;
+    body.theme-light .landing-panel::before {
+      border-color: rgba(209, 213, 225, 0.9);
+      box-shadow:
+        0 0 20px rgba(148, 163, 184, 0.45),
+        0 0 40px rgba(148, 163, 184, 0.3);
     }
 
     .landing-header-row {
@@ -171,6 +259,8 @@
         0 0 12px rgba(31, 146, 218, 0.8);
     }
 
+    body.theme-light .landing-title { text-shadow: none; }
+
     .landing-sub {
       font-size: 15px;
       color: var(--ds-text-soft);
@@ -183,14 +273,25 @@
       border-radius: var(--radius-pill);
       border: 1px solid rgba(41, 182, 246, 0.6);
       background:
-        linear-gradient(135deg, rgba(11, 18, 33, 0.98), rgba(6, 12, 26, 0.98));
+        linear-gradient(135deg, #0b1221, #060c1a);
       color: var(--ds-holo-blue-soft);
-      white-space: nowrap;
+      white-space: normal;
       text-transform: uppercase;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.08em;
       box-shadow:
         0 0 8px rgba(41, 182, 246, 0.7),
         0 0 22px rgba(15, 23, 42, 0.9);
+      max-width: 260px;
+      text-align: right;
+    }
+
+    body.theme-light .landing-chip {
+      background: linear-gradient(135deg, #e0f2fe, #dbeafe);
+      border-color: #93c5fd;
+      color: #1d4ed8;
+      box-shadow:
+        0 0 8px rgba(191, 219, 254, 0.9),
+        0 0 18px rgba(191, 219, 254, 0.7);
     }
 
     .step-list {
@@ -211,6 +312,14 @@
       box-shadow:
         0 12px 30px rgba(0, 0, 0, 0.95),
         inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    body.theme-light .upload-box {
+      background: #f9fafb;
+      border-color: #d1d5e5;
+      box-shadow:
+        0 10px 24px rgba(148, 163, 184, 0.5),
+        inset 0 0 0 1px rgba(209, 213, 225, 0.8);
     }
 
     .upload-label-row {
@@ -266,6 +375,17 @@
         border-color var(--transition-fast);
     }
 
+    body.theme-light #file-input::file-selector-button {
+      background:
+        linear-gradient(135deg, #e0f2fe, #dbeafe),
+        radial-gradient(circle at top, rgba(191, 219, 254, 0.6) 0, transparent 60%);
+      color: #1d4ed8;
+      box-shadow:
+        0 2px 4px rgba(148, 163, 184, 0.7),
+        0 6px 18px rgba(148, 163, 184, 0.6);
+      border-color: #93c5fd;
+    }
+
     #file-input::file-selector-button:hover {
       transform: translateY(-1px) scale(1.01);
       box-shadow:
@@ -277,6 +397,13 @@
       border-color: var(--ds-holo-blue-soft);
     }
 
+    body.theme-light #file-input::file-selector-button:hover {
+      box-shadow:
+        0 3px 8px rgba(148, 163, 184, 0.8),
+        0 10px 26px rgba(148, 163, 184, 0.7);
+      filter: brightness(1.03);
+    }
+
     #file-input::file-selector-button:active {
       transform: translateY(1px) scale(0.99);
       box-shadow:
@@ -284,6 +411,12 @@
         0 6px 18px rgba(0, 0, 0, 0.95),
         0 0 14px rgba(41, 182, 246, 0.8);
       filter: brightness(0.97);
+    }
+
+    body.theme-light #file-input::file-selector-button:active {
+      box-shadow:
+        0 2px 4px rgba(148, 163, 184, 0.9),
+        0 6px 18px rgba(148, 163, 184, 0.8);
     }
 
     .file-pills {
@@ -300,11 +433,18 @@
       gap: 8px;
       padding: 7px 12px;
       border-radius: var(--radius-pill);
-      background: rgba(7, 12, 24, 0.96);
+      background: #070c18;
       font-size: 13px;
       box-shadow:
         inset 0 0 0 1px #111827,
         0 3px 10px rgba(0, 0, 0, 0.85);
+    }
+
+    body.theme-light .file-pill {
+      background: #f9fafb;
+      box-shadow:
+        inset 0 0 0 1px #e5e7eb,
+        0 2px 8px rgba(148, 163, 184, 0.5);
     }
 
     .file-pill-left {
@@ -334,6 +474,10 @@
     .file-pill.ready .file-dot {
       background: var(--ds-holo-blue);
       box-shadow: 0 0 10px rgba(41, 182, 246, 0.95);
+    }
+
+    body.theme-light .file-pill.ready .file-dot {
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.7);
     }
 
     .file-pill.ready .file-name {
@@ -395,6 +539,17 @@
         border-color var(--transition-fast);
     }
 
+    body.theme-light .build-btn {
+      background:
+        linear-gradient(135deg, #f97316, #ea580c),
+        radial-gradient(circle at top, rgba(251, 191, 36, 0.5) 0, transparent 60%);
+      color: #111827;
+      box-shadow:
+        0 3px 10px rgba(249, 115, 22, 0.5),
+        0 8px 20px rgba(249, 115, 22, 0.4);
+      border-color: #fdba74;
+    }
+
     .build-btn:disabled {
       opacity: 0.4;
       cursor: default;
@@ -411,6 +566,12 @@
         0 0 48px rgba(248, 181, 87, 0.85);
       filter: brightness(1.05);
       border-color: #fed7aa;
+    }
+
+    body.theme-light .build-btn:not(:disabled):hover {
+      box-shadow:
+        0 4px 10px rgba(249, 115, 22, 0.6),
+        0 12px 24px rgba(249, 115, 22, 0.5);
     }
 
     .build-btn:not(:disabled):active {
@@ -444,6 +605,14 @@
       box-shadow:
         0 10px 24px rgba(0, 0, 0, 0.95),
         inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+    }
+
+    body.theme-light .tutorial-card {
+      background: #ffffff;
+      border-color: #e5e7eb;
+      box-shadow:
+        0 8px 20px rgba(148, 163, 184, 0.4),
+        inset 0 0 0 1px rgba(229, 231, 235, 0.9);
     }
 
     .tutorial-card details { cursor: pointer; }
@@ -511,15 +680,29 @@
       overflow: hidden;
     }
 
+    body.theme-light .header-card,
+    body.theme-light .table-card {
+      background: #ffffff;
+      box-shadow:
+        0 18px 40px rgba(148, 163, 184, 0.45),
+        0 0 18px rgba(148, 163, 184, 0.25);
+    }
+
     .header-card {
       padding: 20px 22px 18px;
-      text-align: center;
       margin-bottom: 18px;
       line-height: 1.6;
     }
 
-    .header-card:first-child { margin-top: 0; }
-    .table-card:last-child { margin-bottom: 0; }
+    .table-card { margin-top: 8px; }
+
+    .header-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
 
     .title-row {
       display: inline-flex;
@@ -535,6 +718,14 @@
         0 0 16px rgba(41, 182, 246, 0.8);
     }
 
+    body.theme-light .title-row {
+      background: #e0f2fe;
+      border-color: #93c5fd;
+      box-shadow:
+        0 3px 10px rgba(148, 163, 184, 0.6),
+        0 0 16px rgba(191, 219, 254, 0.7);
+    }
+
     .title-emoji { font-size: 22px; }
 
     h1 {
@@ -548,38 +739,10 @@
         0 0 10px rgba(41, 182, 246, 0.7);
     }
 
-    .theme-toggle {
-      margin-top: 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 11px;
-      color: var(--ds-text-soft);
-    }
-
-    .theme-toggle button {
-      border-radius: var(--radius-pill);
-      border: 1px solid #1f2933;
-      background: #050815;
-      color: var(--ds-text-soft);
-      font-size: 11px;
-      padding: 4px 10px;
-      cursor: pointer;
-      transition:
-        background var(--transition-fast),
-        border-color var(--transition-fast),
-        transform 0.1s ease,
-        box-shadow var(--transition-fast),
-        color var(--transition-fast);
-    }
-
-    .theme-toggle button:hover {
-      transform: translateY(-0.5px);
-      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.9);
-    }
+    body.theme-light h1 { text-shadow: none; }
 
     .subtitle {
-      margin: 6px 0 0;
+      margin: 0 0 4px;
       font-size: 13px;
       color: var(--ds-text-soft);
       line-height: 1.6;
@@ -613,6 +776,11 @@
         border-color var(--transition-fast),
         box-shadow var(--transition-fast),
         transform 0.1s ease;
+    }
+
+    body.theme-light .search-box input {
+      background: #f9fafb;
+      border-color: #d1d5db;
     }
 
     .search-box input::placeholder { color: #6b7280; }
@@ -649,11 +817,21 @@
         color var(--transition-fast);
     }
 
+    body.theme-light .filter-chip {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+      color: #374151;
+    }
+
     .filter-chip span.count {
       background: #020617;
       border-radius: 999px;
       padding: 1px 6px;
       font-size: 10px;
+    }
+
+    body.theme-light .filter-chip span.count {
+      background: #e5e7eb;
     }
 
     .filter-chip.active {
@@ -663,9 +841,12 @@
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.95);
     }
 
-    .filter-chip:hover {
-      transform: translateY(-0.5px);
+    body.theme-light .filter-chip.active {
+      background: #e0f2fe;
+      box-shadow: 0 4px 12px rgba(148, 163, 184, 0.6);
     }
+
+    .filter-chip:hover { transform: translateY(-0.5px); }
 
     .progress-bar-wrap {
       margin-top: 10px;
@@ -678,6 +859,11 @@
       margin-right: auto;
       overflow: hidden;
       background: #020617;
+    }
+
+    body.theme-light .progress-bar-wrap {
+      border-color: #e5e7eb;
+      background: #f3f4f6;
     }
 
     .progress-bar {
@@ -694,17 +880,14 @@
       color: var(--ds-text-soft);
     }
 
-    .table-card { margin-top: 8px; }
-
     table {
       width: 100%;
       border-collapse: collapse;
       min-width: 0;
     }
 
-    thead {
-      background: #050815;
-    }
+    thead { background: #050815; }
+    body.theme-light thead { background: #f9fafb; }
 
     th, td {
       padding: 9px 12px;
@@ -721,6 +904,8 @@
       cursor: pointer;
     }
 
+    body.theme-light th { border-bottom-color: #d1d5db; }
+
     th.sortable::after {
       content: "⇅";
       font-size: 10px;
@@ -734,17 +919,18 @@
     tbody tr:nth-child(even) { background: var(--ds-row-even); }
     tbody tr:nth-child(odd)  { background: var(--ds-row-odd); }
 
-    tbody tr:hover {
-      background: var(--ds-row-hover);
-    }
+    tbody tr:hover { background: var(--ds-row-hover); }
 
     tr.tag-unfollowed { background: rgba(127, 29, 29, 0.95) !important; }
     tr.tag-influencer { background: rgba(20, 83, 45, 0.95) !important; }
     tr.tag-public    { background: rgba(30, 64, 175, 0.95) !important; }
 
+    body.theme-light tr.tag-unfollowed { background: #fee2e2 !important; }
+    body.theme-light tr.tag-influencer { background: #dcfce7 !important; }
+    body.theme-light tr.tag-public    { background: #dbeafe !important; }
+
     td.user-cell { font-weight: 500; }
     td.date-cell { color: #9ca3af; font-size: 12px; }
-    td.link-cell { width: 1%; }
     td.status-cell { width: 1%; }
 
     a {
@@ -777,10 +963,22 @@
         color var(--transition-fast);
     }
 
+    body.theme-light .tag-btn,
+    body.theme-light .copy-btn {
+      background: #f3f4f6;
+      border-color: #d1d5db;
+      color: #374151;
+    }
+
     .tag-btn:hover,
     .copy-btn:hover {
       transform: translateY(-0.5px);
       box-shadow: 0 6px 14px rgba(0, 0, 0, 0.9);
+    }
+
+    body.theme-light .tag-btn:hover,
+    body.theme-light .copy-btn:hover {
+      box-shadow: 0 4px 10px rgba(148, 163, 184, 0.7);
     }
 
     .tag-btn.active[data-tag="unfollowed"] {
@@ -805,24 +1003,41 @@
       border-color: #22c55e;
     }
 
+    body.theme-light .copy-btn.copied {
+      background: #ecfdf3;
+      color: #16a34a;
+      border-color: #4ade80;
+    }
+
     @media (max-width: 700px) {
       .landing-header-row {
         flex-direction: column;
         align-items: flex-start;
       }
-      .landing-chip {
-        align-self: flex-start;
-      }
+      .landing-chip { align-self: flex-start; }
       h1,
       .landing-title { font-size: 18px; }
       th, td {
         font-size: 11px;
         padding: 7px 8px;
       }
+      .header-top-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
   </style>
 </head>
 <body class="theme-dark">
+  <!-- GLOBAL THEME TOGGLE -->
+  <div class="theme-toggle-bubble-global">
+    <span class="theme-toggle-label">Theme</span>
+    <button id="theme-toggle-btn" class="theme-toggle-btn">
+      <span class="icon" id="theme-icon">🌙</span>
+      <span id="theme-label-text">Dark</span>
+    </button>
+  </div>
+
   <!-- Landing / upload screen -->
   <div class="landing" id="landing">
     <div class="landing-panel">
@@ -831,7 +1046,9 @@
           <h1 class="landing-title">FALLEN FOLLOW REGISTRY</h1>
           <p class="landing-sub">Logging every follow that didn’t follow through.</p>
         </div>
-        <div class="landing-chip">Secure • No servers, No sign up, No bs, All private</div>
+        <div class="landing-chip">
+          Secure • No servers • No sign up • No BS • All private
+        </div>
       </div>
 
       <ol class="step-list">
@@ -899,15 +1116,14 @@
   <!-- Main dashboard -->
   <div class="page hidden" id="main-app">
     <div class="header-card" id="header-card">
-      <div class="title-row">
-        <span class="title-emoji">⚠️</span>
-        <h1>FALLEN FOLLOW REGISTRY</h1>
-        <span class="title-emoji">⚠️</span>
+      <div class="header-top-row">
+        <div class="title-row">
+          <span class="title-emoji">⚠️</span>
+          <h1>FALLEN FOLLOW REGISTRY</h1>
+          <span class="title-emoji">⚠️</span>
+        </div>
       </div>
-      <div class="theme-toggle">
-        <span>Theme:</span>
-        <button id="theme-toggle-btn">Dark</button>
-      </div>
+
       <p class="subtitle">
         Logging every follow that didn’t follow through.
       </p>
@@ -948,7 +1164,6 @@
           <tr>
             <th class="sortable" data-sort-key="username">Username</th>
             <th class="sortable" data-sort-key="timestamp">Followed at</th>
-            <th>Profile</th>
             <th>Status</th>
           </tr>
         </thead>
@@ -977,23 +1192,35 @@
     const fileStatusText = document.getElementById("file-status-text");
     const landing = document.getElementById("landing");
     const mainApp = document.getElementById("main-app");
+
     const themeToggleBtn = document.getElementById("theme-toggle-btn");
+    const themeIcon = document.getElementById("theme-icon");
+    const themeLabelText = document.getElementById("theme-label-text");
 
     let followersJson = null;
     let followingJson = null;
+
+    function setThemeUI(theme) {
+      if (theme === "light") {
+        themeIcon.textContent = "☀️";
+        themeLabelText.textContent = "Light";
+      } else {
+        themeIcon.textContent = "🌙";
+        themeLabelText.textContent = "Dark";
+      }
+    }
 
     function applyTheme(theme) {
       const body = document.body;
       if (theme === "light") {
         body.classList.remove("theme-dark");
         body.classList.add("theme-light");
-        themeToggleBtn.textContent = "Light";
       } else {
         body.classList.remove("theme-light");
         body.classList.add("theme-dark");
-        themeToggleBtn.textContent = "Dark";
       }
       localStorage.setItem("fallenfollow_theme", theme);
+      setThemeUI(theme);
     }
 
     (function initTheme() {
@@ -1005,11 +1232,13 @@
       }
     })();
 
-    themeToggleBtn.addEventListener("click", () => {
+    function toggleTheme() {
       const current = document.body.classList.contains("theme-light") ? "light" : "dark";
       const next = current === "dark" ? "light" : "dark";
       applyTheme(next);
-    });
+    }
+
+    themeToggleBtn.addEventListener("click", toggleTheme);
 
     function setWaitingText(el) {
       el.textContent = "(waiting)";
@@ -1071,7 +1300,7 @@
       for (const f of files) {
         const lower = f.name.toLowerCase();
         if (lower === "followers_1.json") newFollowersFile = f;
-        if (lower === "following.json")   newFollowingFile = f;
+        if (lower === "following.json" || lower === "following_1.json") newFollowingFile = f;
       }
 
       if (newFollowersFile) {
@@ -1148,7 +1377,9 @@
         for (const entry of followersData) {
           const data = entry && entry.string_list_data;
           if (Array.isArray(data) && data[0] && data[0].value) {
-            followers.add(data[0].value);
+            const uname = String(data[0].value || "").trim().toLowerCase().replace(/^@/, "");
+            if (!uname || uname.includes("deleted")) continue;
+            followers.add(uname);
           }
         }
       }
@@ -1165,7 +1396,10 @@
 
           if (isProbablyDeleted(title, href)) continue;
 
-          followingEntries.push({ username: title, href, timestamp: ts });
+          const uname = String(title || "").trim().toLowerCase().replace(/^@/, "");
+          if (!uname || uname.includes("deleted")) continue;
+
+          followingEntries.push({ username: uname, display: title, href, timestamp: ts });
         }
       }
 
@@ -1179,8 +1413,8 @@
       tbody.innerHTML = "";
 
       for (const e of notFollowingList) {
-        const username = e.username;
-        const href = e.href || ("https://www.instagram.com/" + username);
+        const username = e.display || e.username;
+        const href = e.href || ("https://www.instagram.com/" + e.username);
         const ts = e.timestamp;
         let dateStr = "unknown";
         if (typeof ts === "number") {
@@ -1193,13 +1427,12 @@
         tr.setAttribute("data-timestamp", ts || "");
 
         tr.innerHTML = `
-          <td class="user-cell" title="Mark them however they deserve">${username}</td>
-          <td class="date-cell">${dateStr}</td>
-          <td class="link-cell">
-            <a href="${href}" target="_blank">Open</a>
-            <button class="copy-btn" data-href="${href}" title="Copy link">Copy</button>
+          <td class="user-cell" title="Mark them however they deserve">
+            <a href="${href}" target="_blank">${username}</a>
           </td>
+          <td class="date-cell">${dateStr}</td>
           <td class="status-cell">
+            <button class="copy-btn" data-href="${href}" title="Copy link">Copy</button>
             <button class="tag-btn" data-tag="unfollowed">Unfollowed</button>
             <button class="tag-btn" data-tag="influencer">Influencer/Celeb</button>
             <button class="tag-btn" data-tag="public">Public page</button>
