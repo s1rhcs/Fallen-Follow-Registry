@@ -1,13 +1,43 @@
 # Fallen Follow Registry
 
-**Fallen Follow Registry** is a simple, private tool that shows who you follow on Instagram that **don’t** follow you back.  
 Logging every follow that didn’t follow through.
 
-You just open `index.html`, upload two files from your Instagram download, and it shows you a list. No coding needed. It works on desktop, tablets, and modern mobile browsers.
+> A simple, private, browser‑only tool that shows who you **follow** on Instagram that **don’t** follow you back. Works on desktop, tablets, and modern mobile browsers.
+
+---
+
+### Features
+
+- **100% local** – your data never leaves your device.
+- **No setup** – just open `index.html` in a browser.
+- **Responsive UI** – desktop, tablet, and mobile layouts.
+- **Tagging tools** – mark accounts as *Unfollowed*, *Influencer/Celeb*, *News*, *Meme Page*, or *Other*.
+- **Quick search & filters** – find specific usernames fast.
+
+---
+
+## Quick start
+
+1. **Export your Instagram data** in **JSON** format with **Followers and following** checked.
+2. From the export ZIP, grab:
+   - `followers_1.json`
+   - `following.json` (or `following_1.json`)
+3. **Download this project** from GitHub:
+   - Click the green **Code** button → **Download ZIP**.
+   - Unzip the folder on your computer, tablet, or phone.
+4. Open the tool:
+   - Desktop/laptop: double‑click `index.html`.
+   - Tablet/phone: open `index.html` in your browser (tap it in your file manager).
+5. On the Fallen Follow Registry page, upload both JSON files and click **Build Fallen Follows list**.
+
+You’ll see a table of accounts you follow who don’t follow you back, plus tools to organize them.
 
 ---
 
 ## What it does
+
+**Fallen Follow Registry** is a simple, private tool that shows who you follow on Instagram that **don’t** follow you back.  
+Logging every follow that didn’t follow through.
 
 - You ask Instagram for a copy of your data.
 - Inside that download are two files:
@@ -30,7 +60,7 @@ Nothing is uploaded anywhere. The files stay in your browser on your device.
   - `followers_1.json`
   - `following.json` (or `following_1.json`)
 
-On phones and tablets, the layout adapts, and heavy background animations are disabled to keep things smooth.
+On phones and tablets, the layout adapts and heavy background animations are disabled to keep things smooth.
 
 ---
 
@@ -48,7 +78,7 @@ On phones and tablets, the layout adapts, and heavy background animations are di
 6. Confirm and wait for Instagram’s email/notification.
 7. When it’s ready, download the **ZIP file** to your computer, tablet, or phone.
 
-If you export on your phone, it’s easiest to move the ZIP to a computer or tablet to unzip and pick out the JSON files.
+> Note: If you export on your phone, it’s usually easiest to move the ZIP to a computer or tablet to unzip and grab the JSON files.
 
 ---
 
@@ -75,12 +105,15 @@ You’re already on the GitHub page for this project.
 1. At the top of this page, click the green **Code** button.
 2. Click **Download ZIP**.
 3. When the ZIP finishes downloading, open your **Downloads** folder.
-4. Find the ZIP (for example, `fallen-follow-registry-main.zip`) and extract it.
+4. Find the ZIP (for example `fallen-follow-registry-main.zip`) and extract it.
 5. Open the extracted folder.
 6. Find **`index.html`**.
-7. Double‑click `index.html` (desktop/laptop) or open it in your browser (tablet/phone).
+7. Open it:
+   - **Desktop/laptop:** double‑click `index.html`.
+   - **Tablet/phone:** open `index.html` in your browser (tap it in your file manager).
 
-Your browser will open a page that says **FALLEN FOLLOW REGISTRY** with the subtitle “Logging every follow that didn’t follow through.” On tablets and phones, the layout is narrower and scrollable, and the animated glow is automatically toned down or disabled.
+Your browser will open a page that says **FALLEN FOLLOW REGISTRY** with the subtitle “Logging every follow that didn’t follow through.”  
+On tablets and phones, the layout is narrower and scrollable, and the animated glow is automatically toned down or disabled.
 
 ---
 
@@ -106,7 +139,7 @@ You’ll see:
 - How many people don’t follow you back.
 - A table of those accounts (horizontally scrollable on smaller screens).
 
-For each row, you can:
+For each row you can:
 
 - **Search** by username using the search box.
 - **Open** their profile in a new tab.
